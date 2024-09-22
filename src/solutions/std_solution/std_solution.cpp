@@ -53,9 +53,12 @@ void solution(
     std::string buffer;
     
     while (in >> buffer) {
+        buffer += " ";
         process_data(buffer, current_word, unordered_map);
     }
-
+    if (current_word != "") {
+        unordered_map[current_word] += 1;
+    }
 
     std::vector<std::pair<std::string, int>> vector;
     for (const auto& pair: unordered_map) {

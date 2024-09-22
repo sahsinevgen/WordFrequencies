@@ -1,7 +1,7 @@
 message("Processing solutions directory...")
 
 # Add subdirectories.
-set(SUBDIRECTORIES std_solution)
+set(SUBDIRECTORIES std_solution trie_solution)
 foreach(SUBDIR ${SUBDIRECTORIES})
 	add_subdirectory(${SUBDIR})
 endforeach()
@@ -14,5 +14,5 @@ add_library(solutions
 )
 
 target_link_libraries(solutions PRIVATE
-    std_solution
+    std_solution trie_solution
 )
