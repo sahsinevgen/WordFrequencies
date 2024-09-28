@@ -92,7 +92,7 @@ void trie_to_vector(
 static void process_data (
     char data[],
     int data_size,
-    trie_node* current_node,
+    trie_node* &current_node,
     trie_node* trie_head)
 {
     for (int i = 0; i < data_size; i++) {
