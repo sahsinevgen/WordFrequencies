@@ -95,13 +95,12 @@ static void process_data (
     trie_node* current_node,
     trie_node* trie_head)
 {
-    for (int i = 0; i < data_size + 1; i++) {
+    for (int i = 0; i < data_size; i++) {
         char c;
         if (i < data_size) {
             c = data[i];
-        } else {
-            c = ' ';
         }
+
         trie_node* next_node = current_node->next(c);
         
         if (next_node == nullptr) {
@@ -142,6 +141,10 @@ void solution(
     while (in) {
         in.read(buffer.get(), READ_BUFFER_SIZE);
         process_data(buffer.get(), in.gcount(), current_node, trie_head);
+    }
+    {
+        char data[] = {" "};
+        process_data(data, 1, current_node, trie_head);
     }
 
     std::vector<std::pair<std::string, int>> vector;

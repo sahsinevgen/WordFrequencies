@@ -31,12 +31,10 @@ static void process_data (
     std::string &current_word,
     std::unordered_map<std::string, int> &unordered_map) 
 {
-    for (int i = 0; i < data_size + 1; i++) {
+    for (int i = 0; i < data_size; i++) {
         char c;
         if (i < data_size) {
             c = data[i];
-        } else {
-            c = ' ';
         }
 
         if (is_separator(c)) {
@@ -51,15 +49,13 @@ static void process_data (
     }
 }
 
-//  Insertion sort for 
+
 void my_sort(std::vector<std::pair<std::string, int>> &vector) {
     std::sort(vector.begin(), vector.end(), 
             [](const auto& a, const auto& b) {
                 return a.second > b.second
                     || a.second == b.second && a.first < b.first;
             });
-    
-
 }
 
 
@@ -79,6 +75,10 @@ void solution(
         in.read(buffer.get(), READ_BUFFER_SIZE);
         process_data(buffer.get(), in.gcount(), current_word, unordered_map);
     }
+    {
+        char data[] = {" "};
+        process_data(data, 1, current_word, unordered_map);
+    }
 
     std::vector<std::pair<std::string, int>> vector;
     for (const auto& pair: unordered_map) {
@@ -89,13 +89,7 @@ void solution(
 
     std::cout << "std_unordered_map_solution::sort start\n";
 
-
     my_sort(vector);
-    // std::sort(vector.begin(), vector.end(), 
-    //         [](const auto& a, const auto& b) {
-    //             return a.second > b.second
-    //                 || a.second == b.second && a.first < b.first;
-    //         });
 
     std::ofstream out(output_file, std::fstream::out | std::fstream::trunc);
 
