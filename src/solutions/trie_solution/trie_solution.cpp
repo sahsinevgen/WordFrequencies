@@ -7,9 +7,12 @@
 #include <unordered_map>
 #include <memory>
 
+
 namespace trie_solution {
 
+
 const int READ_BUFFER_SIZE = 1024 * 1024;
+
 
 static bool is_separator(char c) {
     return !('a' <= c && c <= 'z'
@@ -81,19 +84,6 @@ void trie_to_vector(
 }
 
 
-// class trie {
-//     trie(): {
-//         head = new trie_node;
-//     }
-
-//     ~trie(): {
-//         delete head;
-//     }
-// private:
-//     *trie_node head;
-// }
-
-
 static void process_data (
     char data[],
     int data_size,
@@ -139,7 +129,6 @@ void solution(
         in.read(buffer.get(), READ_BUFFER_SIZE);
         process_data(buffer.get(), in.gcount(), current_node, trie_head);
     }
-
 
     std::vector<std::pair<std::string, int>> vector;
     {
