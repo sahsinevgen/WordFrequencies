@@ -5,9 +5,11 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_map>
+#include <memory>
 
 namespace trie_solution {
 
+const int READ_BUFFER_SIZE = 1024 * 1024;
 
 static bool is_separator(char c) {
     return !('a' <= c && c <= 'z'
@@ -92,12 +94,19 @@ void trie_to_vector(
 // }
 
 
-static void process_data(
-    std::string &data,
+static void process_data (
+    char data[],
+    int data_size,
     trie_node* current_node,
-    trie_node* trie_head) 
+    trie_node* trie_head)
 {
-    for (char c: data) {
+    for (int i = 0; i < data_size + 1; i++) {
+        char c;
+        if (i < data_size) {
+            c = data[i];
+        } else {
+            c = ' ';
+        }
         trie_node* next_node = current_node->next(c);
         
         if (next_node == nullptr) {
@@ -124,15 +133,11 @@ void solution(
     trie_node* current_node = trie_head;
 
     std::string current_word = "";
-    // std::vector<char> buffer(1024, 0);
-    std::string buffer;
-    
-    while (in >> buffer) {
-        buffer += " ";
-        process_data(buffer, current_node, trie_head);
-    }
-    if (current_node != trie_head) {
-        current_node->value += 1;
+    std::unique_ptr<char[]> buffer(new char[READ_BUFFER_SIZE]);
+
+    while (in) {
+        in.read(buffer.get(), READ_BUFFER_SIZE);
+        process_data(buffer.get(), in.gcount(), current_node, trie_head);
     }
 
 
