@@ -36,10 +36,14 @@ public:
 
 
     ~trie_node() {
-        for (int i = 0; i < 26; i++) {
-            if (children[i] != nullptr) {
-                delete children[i];
-            }
+        // for (int i = 0; i < 26; i++) {
+        //     if (children[i] != nullptr) {
+        //         delete children[i];
+        //     }
+        // }
+
+        for (auto [_, child]: children) {
+            delete child;
         }
     }
 
@@ -60,7 +64,8 @@ public:
     
 
     int value = 0;
-    trie_node* children[26] = {nullptr, };
+    // trie_node* children[26] = {nullptr, };
+    std::unordered_map<int, trie_node*> children;
 };
 
 
@@ -112,6 +117,15 @@ static void process_data (
 }
 
 
+void my_sort(std::vector<std::pair<std::string, int>> &vector) {
+    std::sort(vector.begin(), vector.end(), 
+            [](const auto& a, const auto& b) {
+                return a.second > b.second
+                    || a.second == b.second && a.first < b.first;
+            });
+}
+
+
 void solution(
     std::string input_file, 
     std::string output_file) 
@@ -138,11 +152,9 @@ void solution(
 
     delete trie_head;
 
-    std::sort(vector.begin(), vector.end(), 
-            [](const auto& a, const auto& b) {
-                return a.second > b.second
-                    || a.second == b.second && a.first < b.first;
-            });
+    std::cout << "trie_solution::sort start\n";
+
+    my_sort(vector);
 
     std::ofstream out(output_file, std::fstream::out | std::fstream::trunc);
 

@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include <memory>
+#include <chrono>
 
 namespace std_solution {
 
@@ -50,6 +51,18 @@ static void process_data (
     }
 }
 
+//  Insertion sort for 
+void my_sort(std::vector<std::pair<std::string, int>> &vector) {
+    std::sort(vector.begin(), vector.end(), 
+            [](const auto& a, const auto& b) {
+                return a.second > b.second
+                    || a.second == b.second && a.first < b.first;
+            });
+    
+
+}
+
+
 void solution(
     std::string input_file, 
     std::string output_file) 
@@ -74,11 +87,15 @@ void solution(
         vector.push_back(pair);
     }
 
-    std::sort(vector.begin(), vector.end(), 
-            [](const auto& a, const auto& b) {
-                return a.second > b.second
-                    || a.second == b.second && a.first < b.first;
-            });
+    std::cout << "std_unordered_map_solution::sort start\n";
+
+
+    my_sort(vector);
+    // std::sort(vector.begin(), vector.end(), 
+    //         [](const auto& a, const auto& b) {
+    //             return a.second > b.second
+    //                 || a.second == b.second && a.first < b.first;
+    //         });
 
     std::ofstream out(output_file, std::fstream::out | std::fstream::trunc);
 
