@@ -5,8 +5,11 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_map>
+#include <memory>
 
 namespace std_solution {
+
+const int READ_BUFFER_SIZE = 1024 * 1024;  //  should it be global const?
 
 static bool is_separator(char c) {
     return !('a' <= c && c <= 'z'
@@ -21,12 +24,20 @@ static char lower(char c) {
     return c;
 }
 
-static void process_data(
-    std::string &data,
+static void process_data (
+    char data[],
+    int data_size,
     std::string &current_word,
     std::unordered_map<std::string, int> &unordered_map) 
 {
-    for (char c: data) {
+    for (int i = 0; i < data_size + 1; i++) {
+        char c;
+        if (i < data_size) {
+            c = data[i];
+        } else {
+            c = ' ';
+        }
+
         if (is_separator(c)) {
             if (current_word != "") {
                 unordered_map[current_word] += 1;
@@ -49,19 +60,17 @@ void solution(
     std::unordered_map<std::string, int> unordered_map;
 
     std::string current_word = "";
-    // std::vector<char> buffer(1024, 0);
-    std::string buffer;
-    
-    while (in >> buffer) {
-        buffer += " ";
-        process_data(buffer, current_word, unordered_map);
-    }
-    if (current_word != "") {
-        unordered_map[current_word] += 1;
+    std::unique_ptr<char[]> buffer(new char[READ_BUFFER_SIZE]);
+
+    while (in) {
+        in.read(buffer.get(), READ_BUFFER_SIZE);
+        process_data(buffer.get(), in.gcount(), current_word, unordered_map);
     }
 
     std::vector<std::pair<std::string, int>> vector;
     for (const auto& pair: unordered_map) {
+        //  here i tried std::move. But this didn't make visible profit
+        //  i expected this, because words are normally short strings
         vector.push_back(pair);
     }
 
