@@ -36,15 +36,15 @@ public:
 
 
     ~trie_node() {
-        // for (int i = 0; i < 26; i++) {
-        //     if (children[i] != nullptr) {
-        //         delete children[i];
-        //     }
-        // }
-
-        for (auto [_, child]: children) {
-            delete child;
+        for (int i = 0; i < 26; i++) {
+            if (children[i] != nullptr) {
+                delete children[i];
+            }
         }
+
+        // for (auto [_, child]: children) {
+        //     delete child;
+        // }
     }
 
 
@@ -64,8 +64,8 @@ public:
     
 
     int value = 0;
-    // trie_node* children[26] = {nullptr, };
-    std::unordered_map<int, trie_node*> children;
+    trie_node* children[26] = {nullptr, };
+    // std::unordered_map<int, trie_node*> children;
 };
 
 
